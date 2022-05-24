@@ -73,13 +73,96 @@ class ViewController: UIViewController {
     }
     
     private func setupIPLabels() {
-        
+        let addr = IPManager.shared.getIFAddresses()
+        print(addr)
+
+        let IP6_A = addr[0]
+        let IP4_0 = addr[1]
+        let IP6_B = addr[2]
+        let IP6_C = addr[3]
+        let IP6_D = addr[4]
+        let IP6_E = addr[5]
+
+        ipv.text?   = IP6_A
+        IP4_TextField?.text?   = IP4_0
+        IP6B_TextField?.text?  = IP6_B
+        IP6C_TextField?.text?  = IP6_C
+        IP6D_TextField?.text?  = IP6_D
+        IP6E_TextField?.text?  = IP6_E
     }
     
     private func setupPortLabels() {
-        
+        if (PortsManager.shared.checkTcpPortForListen(port: 21) == true){
+          port21.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 22) == true){
+          port22.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 23) == true){
+          port23.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 25) == true){
+          port25?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 53) == true){
+          port53?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 110) == true){
+          port110?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 115) == true){
+          port115?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 135) == true){
+          port135?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 139) == true){
+          port139?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 143) == true){
+          port143?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 194) == true){
+          port194?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 443) == true){
+          port443?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 445) == true){
+          port445?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 1433) == true){
+          port1433?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 3306) == true){
+          port3306?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 3389) == true){
+          port3389?.textColor = UIColor.orange
+        }
+
+        if (PortsManager.shared.checkTcpPortForListen(port: 5632) == true){
+          port5632?.textColor = UIColor.orange
+        }
+
     }
     
+    //MARK: Network
     func checkForSpeedTest() {
         testDownloadSpeedWithTimout(timeout: 10.0) { (speed, error) in
         print("Download Speed:", speed ?? "NA")
@@ -139,5 +222,12 @@ class ViewController: UIViewController {
       speedTestCompletionBlock?(speed, nil)
     }
 
+    //MARK: IBOutlets
+    @IBAction func testNetworkTapped(_ sender: UIButton) {
+        checkForSpeedTest()
+        setupTimeLabels()
+        setupIPLabels()
+        setupPortLabels()
+    }
 }
 

@@ -312,6 +312,9 @@
                                         </fragment>
                                     </attributedString>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="testNetworkTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aiP-SO-21f"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
