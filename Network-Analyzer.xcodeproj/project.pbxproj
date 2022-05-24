@@ -26,6 +26,8 @@
 		7C4FF50E283BD3F7000641E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7C4FF510283BD3F7000641E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C8B79A9283D5CD7005708E7 /* PortsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PortsManager.swift; path = "../../../Downloads/NetworkScannerPro-IOS-master/Network Scanner Pro/NSP/PortsManager.swift"; sourceTree = "<group>"; };
+		7C8B79AB283D5E24005708E7 /* NSP.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NSP.entitlements; sourceTree = "<group>"; };
+		7C8B79AC283D5E2A005708E7 /* Network Scanner Pro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Network Scanner Pro.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +44,7 @@
 		7C4FF4F6283BD3F4000641E8 = {
 			isa = PBXGroup;
 			children = (
+				7C8B79AB283D5E24005708E7 /* NSP.entitlements */,
 				7C4FF501283BD3F4000641E8 /* Network-Analyzer */,
 				7C4FF500283BD3F4000641E8 /* Products */,
 			);
@@ -58,6 +61,7 @@
 		7C4FF501283BD3F4000641E8 /* Network-Analyzer */ = {
 			isa = PBXGroup;
 			children = (
+				7C8B79AC283D5E2A005708E7 /* Network Scanner Pro.entitlements */,
 				7C8B79A9283D5CD7005708E7 /* PortsManager.swift */,
 				7C4FF502283BD3F4000641E8 /* AppDelegate.swift */,
 				7C4FF504283BD3F4000641E8 /* SceneDelegate.swift */,

@@ -46,12 +46,30 @@ class ViewController: UIViewController {
     @IBOutlet weak var port3306: UILabel!
     @IBOutlet weak var port5632: UILabel!
     
+    //MARK: Variables
+    typealias speedTestCompletionHandler = (_ megabytesPerSecond: Double? , _ error: Error?) -> Void
+
+    var speedTestCompletionBlock : speedTestCompletionHandler?
+
+    var startTime: CFAbsoluteTime!
+    var stopTime: CFAbsoluteTime!
+    var bytesReceived: Int!
+    var bytesReceivedCG: CGFloat = 0.0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupTimeLabels()
         setupIPLabels()
         setupPortLabels()
+        
+        checkForSpeedTest()
+    }
+    
+    private func setupTimeLabels() {
+        startTimeLabel?.text? = "\(String(round(startTime.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) - startTime.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) )))"
+        speedLabel?.text? = "\(bytesReceivedCG)";
+        endTimeLabel?.text? = "\(String(round(stopTime!.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60))))";
     }
     
     private func setupIPLabels() {
@@ -61,7 +79,8 @@ class ViewController: UIViewController {
     private func setupPortLabels() {
         
     }
-
+    
+    
 
 }
 
