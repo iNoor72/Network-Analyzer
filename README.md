@@ -1,6 +1,6 @@
 # Network-Analyzer
 
-Network-Analyzr is a project build for the Wireless Networks course at Faculty of Engineering - Ain Shams Univeristy.
+Network-Analyzer is a project build for the Wireless Networks course at Faculty of Engineering - Ain Shams Univeristy.
 
 ## Description
 This is our implementation for the project requested by Dr. Tamer Mostafa for the Wireless Networks course. It's an iOS application that shows a lot of information about the network connection on the iOS device (WiFi or cellular) and shows the strength of connection by sending a network request.
