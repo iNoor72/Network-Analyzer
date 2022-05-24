@@ -64,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				7C8B79AC283D5E2A005708E7 /* Network Scanner Pro.entitlements */,
+				7C8B79AD283D6AC9005708E7 /* IPManager.swift */,
 				7C8B79A9283D5CD7005708E7 /* PortsManager.swift */,
 				7C4FF502283BD3F4000641E8 /* AppDelegate.swift */,
 				7C4FF504283BD3F4000641E8 /* SceneDelegate.swift */,
@@ -72,7 +73,6 @@
 				7C4FF50B283BD3F7000641E8 /* Assets.xcassets */,
 				7C4FF50D283BD3F7000641E8 /* LaunchScreen.storyboard */,
 				7C4FF510283BD3F7000641E8 /* Info.plist */,
-				7C8B79AD283D6AC9005708E7 /* IPManager.swift */,
 			);
 			path = "Network-Analyzer";
 			sourceTree = "<group>";

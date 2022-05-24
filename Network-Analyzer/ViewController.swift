@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     //MARK: Network Speed Labels
     @IBOutlet weak var startTimeLabel: UILabel!
     @IBOutlet weak var speedLabel: UILabel!
-    @IBOutlet weak var endTimeLabel: UILabel!
+    @IBOutlet weak var elapsedTimeLabel: UILabel!
     
     
     //MARK: Port Labels
@@ -49,19 +49,19 @@ class ViewController: UIViewController {
     //MARK: Variables
     typealias speedTestCompletionHandler = (_ megabytesPerSecond: Double? , _ error: Error?) -> Void
 
-    var speedTestCompletionBlock : speedTestCompletionHandler?
+    private var speedTestCompletionBlock : speedTestCompletionHandler?
 
-    var startTime: CFAbsoluteTime!
-    var stopTime: CFAbsoluteTime!
-    var bytesReceived: Int!
-    var bytesReceivedCG: CGFloat = 0.0
+    private var startTime: CFAbsoluteTime!
+    private var stopTime: CFAbsoluteTime!
+    private var bytesReceived: Int!
+    private var bytesReceivedCG: CGFloat = 0.0
     
+    private let date = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        startTimeLabel.text = "0.0 seconds"
-        endTimeLabel.text = "0.0 seconds"
+        startTimeLabel.text = "0.0"
         checkForSpeedTest()
         setupTimeLabels()
         setupIPLabels()
@@ -69,9 +69,11 @@ class ViewController: UIViewController {
     }
     
     private func setupTimeLabels() {
-        startTimeLabel?.text? = "\(String(round(startTime.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) - startTime.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) ))) seconds"
-        speedLabel?.text? = "\(bytesReceivedCG.truncatingRemainder(dividingBy: 1024)) MB/sec"
-        endTimeLabel?.text? = "\(String(round(stopTime!.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60)))) seconds"
+        startTimeLabel.text = "\(Calendar.current.component(.hour, from: date)):\(Calendar.current.component(.minute, from: date)):\(Calendar.current.component(.second, from: date))"
+        
+        speedLabel.text = "Calculating..."
+        
+        elapsedTimeLabel.text = "Calculating..."
     }
     
     private func setupIPLabels() {
@@ -82,11 +84,11 @@ class ViewController: UIViewController {
         let IP4_0 = addr[1]
         let IP6_B = addr[2]
         let IP6_C = addr[3]
-        let IP6_D = addr[4]
+        let IP6_D = addr[7]
         let IP6_E = addr[5]
 
         ipv4_1.text?   = IP6_A
-        ipv4_2?.text?   = IP4_0
+        ipv4_2?.text?  = IP4_0
         ipv4_3?.text?  = IP6_B
         ipv6_1?.text?  = IP6_C
         ipv6_2?.text?  = IP6_D
@@ -186,12 +188,12 @@ class ViewController: UIViewController {
 
       let task =  session.dataTask(with: request) {[weak self] (data, resp, error) in
         guard error == nil && data != nil, let self = self else{
-          print("connection error or data is nill")
+          print("connection error or data is nil")
           return
         }
 
         guard resp != nil else{
-          print("respons is nill")
+          print("response is nill")
           return
         }
 
@@ -199,8 +201,12 @@ class ViewController: UIViewController {
         print(length)
         let elapsed = CGFloat(Date().timeIntervalSince(startTime))
         print("elapsed: \(elapsed)")
-        self.bytesReceivedCG = length/elapsed;
+          self.bytesReceivedCG = length/elapsed;
         print("Speed: \(length/elapsed) Mb/sec")
+          DispatchQueue.main.async {
+              self.elapsedTimeLabel.text = "\(elapsed) seconds"
+              self.speedLabel.text = "\(self.bytesReceivedCG) MB/sec"
+          }
 
       }
       task.resume()
@@ -229,6 +235,38 @@ class ViewController: UIViewController {
         checkForSpeedTest()
         setupTimeLabels()
         setupPortLabels()
+    }
+    
+    @IBAction func ipInfoTapped(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Network Analyzer Info", message: "This is our project for CSE439: Wireless Networks course at Ain Shams University. This app was made by the team of Noor, Ahmad, and Kero.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+          switch action.style{
+          case .default:
+            print("default [OK Pressed]")
+
+          case .cancel:
+            print("cancel [CANCEL Pressed]")
+
+          case .destructive:
+            print("destructive [Destructive Type: After n seconds]")
+          }}))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func portsInfoTapped(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Ports Available", message: "This section shows the status of different port numbers, these port numbers corresponds for the following: 21 FTP, 22 SSH, 23 TELNET, 25 SMTP, 53 DNS, 80 HTTP, 110 POP3, 115 SFTP, 135 RPC, 139 NetBIOS, 143 IMAP, 194 IRC, 443 SSL, 445 SMB, 1433 MSSQL, 3306 MySQL, 3389 Remote Desktop, 5632 PCAnywhere.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+          switch action.style{
+          case .default:
+            print("default [OK Pressed]")
+
+          case .cancel:
+            print("cancel [CANCEL Pressed]")
+
+          case .destructive:
+            print("destructive [Destructive Type: After n seconds]")
+          }}))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
