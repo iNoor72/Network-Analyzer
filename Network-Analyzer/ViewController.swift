@@ -49,7 +49,17 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        setupIPLabels()
+        setupPortLabels()
+    }
+    
+    private func setupIPLabels() {
+        
+    }
+    
+    private func setupPortLabels() {
+        
     }
 
 
