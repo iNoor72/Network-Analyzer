@@ -80,7 +80,64 @@ class ViewController: UIViewController {
         
     }
     
-    
+    func checkForSpeedTest() {
+        testDownloadSpeedWithTimout(timeout: 10.0) { (speed, error) in
+        print("Download Speed:", speed ?? "NA")
+        print("Speed Test Error:", error ?? "NA")
+      }
+    }
+
+    func testDownloadSpeedWithTimout(timeout: TimeInterval, withCompletionBlock: @escaping speedTestCompletionHandler) {
+        startTime = CFAbsoluteTimeGetCurrent()
+        testSpeed()
+        stopTime = CFAbsoluteTimeGetCurrent()
+    }
+
+    func testSpeed()  {
+      let url = URL(string: "https://images.apple.com/v/imac-with-retina/a/images/overview/5k_image.jpg")
+      let request = URLRequest(url: url!)
+      let session = URLSession.shared
+      let startTime = Date()
+
+      let task =  session.dataTask(with: request) { (data, resp, error) in
+        guard error == nil && data != nil else{
+          print("connection error or data is nill")
+          return
+        }
+
+        guard resp != nil else{
+          print("respons is nill")
+          return
+        }
+
+        let length  = CGFloat( (resp?.expectedContentLength)!) / 1000000.0
+        print(length)
+        let elapsed = CGFloat( Date().timeIntervalSince(startTime))
+        print("elapsed: \(elapsed)")
+        self.bytesReceivedCG = length/elapsed;
+        print("Speed: \(length/elapsed) Mb/sec")
+
+      }
+      task.resume()
+    }
+
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+      bytesReceived! += data.count
+      stopTime = CFAbsoluteTimeGetCurrent()
+    }
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+
+      let elapsed = stopTime - startTime
+
+      if let aTempError = error as NSError?, aTempError.domain != NSURLErrorDomain && aTempError.code != NSURLErrorTimedOut && elapsed == 0  {
+        speedTestCompletionBlock?(nil, error)
+        return
+      }
+
+      let speed = elapsed != 0 ? Double(bytesReceived) / elapsed / 1024.0 / 1024.0 : -1
+      speedTestCompletionBlock?(speed, nil)
+    }
 
 }
 
