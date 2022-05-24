@@ -59,17 +59,19 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        startTimeLabel.text = "0.0 seconds"
+        endTimeLabel.text = "0.0 seconds"
+        checkForSpeedTest()
         setupTimeLabels()
         setupIPLabels()
         setupPortLabels()
-        
-        checkForSpeedTest()
     }
     
     private func setupTimeLabels() {
-        startTimeLabel?.text? = "\(String(round(startTime.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) - startTime.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) )))"
-        speedLabel?.text? = "\(bytesReceivedCG)";
-        endTimeLabel?.text? = "\(String(round(stopTime!.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60))))";
+        startTimeLabel?.text? = "\(String(round(startTime.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) - startTime.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) ))) seconds"
+        speedLabel?.text? = "\(bytesReceivedCG.truncatingRemainder(dividingBy: 1024)) MB/sec"
+        endTimeLabel?.text? = "\(String(round(stopTime!.truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60)))) seconds"
     }
     
     private func setupIPLabels() {
@@ -83,81 +85,81 @@ class ViewController: UIViewController {
         let IP6_D = addr[4]
         let IP6_E = addr[5]
 
-        ipv.text?   = IP6_A
-        IP4_TextField?.text?   = IP4_0
-        IP6B_TextField?.text?  = IP6_B
-        IP6C_TextField?.text?  = IP6_C
-        IP6D_TextField?.text?  = IP6_D
-        IP6E_TextField?.text?  = IP6_E
+        ipv4_1.text?   = IP6_A
+        ipv4_2?.text?   = IP4_0
+        ipv4_3?.text?  = IP6_B
+        ipv6_1?.text?  = IP6_C
+        ipv6_2?.text?  = IP6_D
+        ipv6_3?.text?  = IP6_E
     }
     
     private func setupPortLabels() {
         if (PortsManager.shared.checkTcpPortForListen(port: 21) == true){
-          port21.textColor = UIColor.orange
+          port21.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 22) == true){
-          port22.textColor = UIColor.orange
+          port22.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 23) == true){
-          port23.textColor = UIColor.orange
+          port23.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 25) == true){
-          port25?.textColor = UIColor.orange
+          port25?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 53) == true){
-          port53?.textColor = UIColor.orange
+          port53?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 110) == true){
-          port110?.textColor = UIColor.orange
+          port110?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 115) == true){
-          port115?.textColor = UIColor.orange
+          port115?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 135) == true){
-          port135?.textColor = UIColor.orange
+          port135?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 139) == true){
-          port139?.textColor = UIColor.orange
+          port139?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 143) == true){
-          port143?.textColor = UIColor.orange
+          port143?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 194) == true){
-          port194?.textColor = UIColor.orange
+          port194?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 443) == true){
-          port443?.textColor = UIColor.orange
+          port443?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 445) == true){
-          port445?.textColor = UIColor.orange
+          port445?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 1433) == true){
-          port1433?.textColor = UIColor.orange
+          port1433?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 3306) == true){
-          port3306?.textColor = UIColor.orange
+          port3306?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 3389) == true){
-          port3389?.textColor = UIColor.orange
+          port3389?.textColor = UIColor.green
         }
 
         if (PortsManager.shared.checkTcpPortForListen(port: 5632) == true){
-          port5632?.textColor = UIColor.orange
+          port5632?.textColor = UIColor.green
         }
 
     }
@@ -182,8 +184,8 @@ class ViewController: UIViewController {
       let session = URLSession.shared
       let startTime = Date()
 
-      let task =  session.dataTask(with: request) { (data, resp, error) in
-        guard error == nil && data != nil else{
+      let task =  session.dataTask(with: request) {[weak self] (data, resp, error) in
+        guard error == nil && data != nil, let self = self else{
           print("connection error or data is nill")
           return
         }
@@ -195,7 +197,7 @@ class ViewController: UIViewController {
 
         let length  = CGFloat( (resp?.expectedContentLength)!) / 1000000.0
         print(length)
-        let elapsed = CGFloat( Date().timeIntervalSince(startTime))
+        let elapsed = CGFloat(Date().timeIntervalSince(startTime))
         print("elapsed: \(elapsed)")
         self.bytesReceivedCG = length/elapsed;
         print("Speed: \(length/elapsed) Mb/sec")
@@ -226,7 +228,6 @@ class ViewController: UIViewController {
     @IBAction func testNetworkTapped(_ sender: UIButton) {
         checkForSpeedTest()
         setupTimeLabels()
-        setupIPLabels()
         setupPortLabels()
     }
 }
